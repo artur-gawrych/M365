@@ -5,13 +5,16 @@ Enable-OrganizationCustomization
 
 if ((Get-OrganizationConfig).AuditDisabled -eq $True) {
     Set-OrganizationConfig -AuditDisabled $False
-    Write-Output 'Enabled Auditing in Organization Configuration'
+    Write-Output 'Enabled Auditing in Organization Configuration.'
 } else {
-    Write-Output 'Auditing is already enabled in Organization Configuration'
+    Write-Output 'Auditing is already enabled in Organization Configuration.'
 }
 
 if ((Get-AdminAuditLogConfig).UnifiedAuditLogIngestionEnabled -eq $False) {
     Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $True
+    Write-Output "Admin Audit Log enabled."
+} else {
+    Write-Output "Admin Audit Log already enabled."
 }
 
 $AuditingParameters = @{
@@ -33,6 +36,9 @@ foreach ($mailbox in (Get-Mailbox -ResultSize Unlimited)) {
 
 if ((Get-OrganizationConfig).OAuth2ClientProfileEnabled -eq $False) {
     Set-OrganizationConfig -OAuth2ClientProfileEnabled $True
+    Write-Output "Enabled Modern Authentication."
+}   elese {
+    Write-Output "Modern Authentication si already enabled."
 }
 
 #endregion
@@ -42,13 +48,13 @@ if ((Get-OrganizationConfig).OAuth2ClientProfileEnabled -eq $False) {
 if ((Get-RemoteDomain).AutoForwardEnabled -eq $True) {
     Set-RemoteDomain -Identity Default -AutoForwardEnabled $False
     Write-Output 'Disabled forwarding to remote domains.'
+} else {
+    Write-Output "Forwarding to remote domains already disabled."
 }
 
 #endregion
 
 #region Configure a spam filter policy
-
-
 
 $SpamPolicyParameters = @{
     Name                             = '[Custom] Anti SPAM Filter Policy'
@@ -162,6 +168,8 @@ New-AntiPhishRule @AntiPhishingRuleParameters
 if ((Get-ExternalInOutlook).Enabled -eq $False){
     Set-ExternalInOutlook -Enabled $True
     Write-Output 'Enabled "External" tag in Outlook client for emails originating from outside of the organization.'
+} else {
+    Write-Output '"External" tag in Outlook client already enabled.'
 }
 
 #endregion
