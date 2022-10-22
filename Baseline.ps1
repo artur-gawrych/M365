@@ -46,19 +46,6 @@ if ((Get-RemoteDomain).AutoForwardEnabled -eq $True) {
 
 #endregion
 
-#region Quarantine Policy
-
-
-$QuartinePolicyParameters =@{
-    Name                                = '[Custom] Quarantine Policy'
-    EndUserQuarantinePermissionsValue   = 27
-    ESNEnabled                          = $true
-}
-
-
-New-QuarantinePolicy @QuartinePolicyParameters
-
-
 #region Configure a spam filter policy
 
 
